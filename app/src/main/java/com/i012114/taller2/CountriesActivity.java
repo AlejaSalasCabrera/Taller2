@@ -1,6 +1,7 @@
 package com.i012114.taller2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,9 +15,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.i012114.taller2.Adapters.AdapterCountry;
+import com.i012114.taller2.Adapters.AdapterCountryDatail;
 import com.i012114.taller2.Connection.HttpManager;
 import com.i012114.taller2.Models.Country;
+import com.i012114.taller2.Models.CountryDetail;
 import com.i012114.taller2.Parser.JsonCountry;
+import com.i012114.taller2.Parser.JsonCountryDetail;
 
 import org.json.JSONException;
 
@@ -30,6 +34,8 @@ public class CountriesActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Country> countryList;
     AdapterCountry adapterCountry;
+    List<CountryDetail> countryDetailList;
+    AdapterCountryDatail adapterCountryDatail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +50,13 @@ public class CountriesActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+
+
     }
 
     public void processData(){
-        adapterCountry = new AdapterCountry(countryList, getApplicationContext());
-        recyclerView.setAdapter(adapterCountry);
+        adapterCountryDatail = new AdapterCountryDatail(countryDetailList, getApplicationContext());
+        recyclerView.setAdapter(adapterCountryDatail);
     }
 
 
@@ -99,7 +107,7 @@ public class CountriesActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                countryList = JsonCountry.getData(s);
+                countryDetailList = JsonCountryDetail.getData(s);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -107,4 +115,6 @@ public class CountriesActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
     }
+
+
 }
