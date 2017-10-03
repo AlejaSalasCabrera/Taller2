@@ -16,11 +16,14 @@ import android.widget.Toast;
 
 import com.i012114.taller2.Adapters.AdapterCountry;
 import com.i012114.taller2.Adapters.AdapterCountryDatail;
+import com.i012114.taller2.Adapters.AdapterPhotos;
 import com.i012114.taller2.Connection.HttpManager;
 import com.i012114.taller2.Models.Country;
 import com.i012114.taller2.Models.CountryDetail;
+import com.i012114.taller2.Models.Photos;
 import com.i012114.taller2.Parser.JsonCountry;
 import com.i012114.taller2.Parser.JsonCountryDetail;
+import com.i012114.taller2.Parser.JsonPhotos;
 
 import org.json.JSONException;
 
@@ -36,6 +39,8 @@ public class CountriesActivity extends AppCompatActivity {
     AdapterCountry adapterCountry;
     List<CountryDetail> countryDetailList;
     AdapterCountryDatail adapterCountryDatail;
+    List<Photos> photosList;
+    AdapterPhotos adapterPhotos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,8 @@ public class CountriesActivity extends AppCompatActivity {
     }
 
     public void processData(){
-        adapterCountryDatail = new AdapterCountryDatail(countryDetailList, getApplicationContext());
-        recyclerView.setAdapter(adapterCountryDatail);
+        adapterPhotos = new AdapterPhotos(photosList, getApplicationContext());
+        recyclerView.setAdapter(adapterPhotos);
     }
 
 
@@ -77,7 +82,7 @@ public class CountriesActivity extends AppCompatActivity {
     public void loadData(View view){
         if (isOnLine()){
             TaskCountry taskCountry = new TaskCountry();
-            taskCountry.execute("https://restcountries.eu/rest/v2/lang/es");
+            taskCountry.execute("https://jsonplaceholder.typicode.com/photos");
         }else {
             Toast.makeText(this, "Sin conexion", Toast.LENGTH_SHORT).show();
         }
@@ -107,7 +112,7 @@ public class CountriesActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                countryDetailList = JsonCountryDetail.getData(s);
+                photosList = JsonPhotos.getData(s);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
